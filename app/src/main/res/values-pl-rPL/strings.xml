@@ -74,7 +74,7 @@
         <item quantity="other">Albumów</item>
     </plurals>
     <string name="always">Zawsze</string>
-    <string name="app_share">Hej, sprawdź ten fajny odtwarzacz muzyki na: https://play.google.com/store/apps/details?id=%s</string>
+    <string name="app_share">Hej, sprawdź ten fajny odtwarzacz muzyki na: https://github.com/dracinn/Metro</string>
     <string name="app_shortcut_shuffle_all_short">Losowo</string>
     <string name="app_shortcut_top_tracks_short">Najczęściej odtwarzane utwory</string>
     <string name="app_widget_big_name">Duży</string>
@@ -139,7 +139,6 @@
     <string name="copied_device_info_to_clipboard">Skopiowano informacje o urządzeniu do schowka</string>
     <string name="could_not_create_playlist">Nie udało się utworzyć playlisty.</string>
     <string name="could_not_download_album_cover">"Nie udało się pobrać pasującej okładki albumu"</string>
-    <string name="could_not_restore_purchase">Nie udało się przywrócić zakupu.</string>
     <string name="could_not_scan_files">Nie udało się przeskanować %d plików.</string>
     <string name="create_action">Utwórz</string>
     <string name="create_new_backup">Utwórz</string>
@@ -168,7 +167,7 @@
     <string name="do_you_want_to_clear_the_blacklist">Czy chcesz wyczyścić listę ignorowanych?</string>
     <string name="do_you_want_to_remove_from_the_blacklist"><![CDATA[Czy chcesz usunąć <b>%1$s</b> z listy ignorowanych?]]></string>
     <string name="donate">Wesprzyj nas</string>
-    <string name="donate_summary">Jeżeli uważasz, że zasługuje na zapłatę za moją pracę możesz zostawić tu drobną sumę</string>
+    <string name="donate_summary">Support the project on GitHub</string>
     <string name="donation_header">Kup mi:</string>
     <string name="done">Gotowe</string>
     <string name="drive_mode">Tryb samochodowy</string>
@@ -225,7 +224,6 @@
     <string name="import_playlist">Importuj playlistę</string>
     <string name="import_playlist_message">Importuje wszystkie playlisty wymienione w Android Media Store z utworami; jeśli playlisty już istnieją, utwory zostaną scalone.</string>
     <string name="inserted_x_songs_into_playlist_x">Dodano %1$d utworów do playlisty %2$s.</string>
-    <string name="instagram_page_summary">Udostępnij swój desigm aplikacji Retro Music na Instagramie</string>
     <string name="keyboard">Klawiatura</string>
     <string name="label_bit_rate">Jakość</string>
     <string name="label_file_format">Typ</string>
@@ -245,7 +243,6 @@
     <string name="light_theme_name">Jasny</string>
     <string name="listeners_label">Słuchacze</string>
     <string name="listing_files">Wyświetlanie plików</string>
-    <string name="loading_products">Ładowanie...</string>
     <string name="login">Zaloguj się</string>
     <string name="lyrics">Tekst utworu</string>
     <string name="made_with_love">Stworzone z ❤️ w Indiach</string>
@@ -274,17 +271,15 @@
     <string name="no_lyrics_found">Nie znaleziono tekstu utworu</string>
     <string name="no_playing_queue">Brak odtwarzanych utworów</string>
     <string name="no_playlists">Brak playlist</string>
-    <string name="no_purchase_found">Nie znaleziono zakupu.</string>
     <string name="no_results">Brak wyników.</string>
     <string name="no_songs">Brak utworów</string>
+    <string name="no_search_results">Nie znaleziono wyników</string>
     <string name="normal">Normalne</string>
     <string name="normal_lyrics">Tekst utworu</string>
     <string name="not_listed_in_media_store"><![CDATA[<b>%s</b> nie znajduje się w magazynie multimediów.]]></string>
     <string name="not_recently_played">Ostatnio nieodtwarzane</string>
     <string name="nothing_to_scan">Brak elementów do przeskanowania.</string>
     <string name="nothing_to_see">Pusto</string>
-    <string name="notification">Powiadomienie</string>
-    <string name="notification_settings_summary">Dostosuj wygląd powiadomień</string>
     <string name="now_playing">Teraz odtwarzane</string>
     <string name="now_playing_queue">Teraz odtwarzane</string>
     <string name="now_playing_summary">Dostosuj odtwarzacz</string>
@@ -337,6 +332,8 @@
     <string name="pref_keep_pause_on_zero_volume_title">Zatrzymaj przy wyłączonym dźwięku</string>
     <string name="pref_keep_screen_on_summary">Ta opcja może mieć wpływ na zużycie baterii</string>
     <string name="pref_keep_screen_on_title">Pozostaw ekran włączony</string>
+    <string name="pref_show_when_locked_summary">Wymaga ponownego uruchomienia aplikacji. Odtwarzacz musi być na pierwszym planie przed zablokowaniem ekranu</string>
+    <string name="pref_show_when_locked_title">Pokaż interfejs odtwarzacza na zablokowanym ekranie</string>
     <string name="pref_language_name">Wybierz język</string>
     <string name="pref_snow_fall_title">Efekt „padającego śniegu”</string>
     <string name="pref_summary_album_art_on_lockscreen">Używaj okładki aktualnie odtwarzanego albumu jako tła ekranu blokady</string>
@@ -347,16 +344,15 @@
     <string name="pref_summary_bluetooth_playback">Rozpocznij odtwarzanie po podłączeniu urządzenia Bluetooth</string>
     <string name="pref_summary_blurred_album_art">Rozmyj okładkę albumu na ekranie blokady. Może powodować problemy z aplikacjami i widżetami innych firm</string>
     <string name="pref_summary_carousel_effect">Efekt karuzeli na okładce obecnie odtwarzanego albumu. Motywy karty i rozmycie nie będą dostępne</string>
-    <string name="pref_summary_classic_notification">Użyj klasycznego wyglądu powiadomień</string>
     <string name="pref_summary_colored_app">Tło oraz kolory przycisków sterujących będą zmieniać się zgodnie z okładką albumu na ekranie odtwarzacza</string>
     <string name="pref_summary_colored_app_shortcuts">Koloruje skróty aplikacji w kolorze wiodącym. Za każdym razem, gdy zmieniasz kolor, włącz tę opcję, aby zmiany odniosły skutek.</string>
     <string name="pref_summary_colored_notification">"Koloruje powiadomienie dominującym kolorem okładki albumu."</string>
     <string name="pref_summary_cross_fade">Czas płynnego przejścia między utworami</string>
     <string name="pref_summary_desaturated_color">Podążaj za zaleceniami Material Design; w trybie ciemnym kolory powinny być mniej nasycone</string>
+    <string name="pref_summary_disable_speaker">Disable playback from the internal speaker</string>
     <string name="pref_summary_expand_now_playing_panel">Kliknięcie powiadomienia pokaże odtwarzacz zamiast ekranu głównego</string>
     <string name="pref_summary_extra_controls">Dodaj dodatkowe przyciski do miniodtwarzacza</string>
     <string name="pref_summary_extra_song_info">Pokaż dodatkowe informacje o utworze, takie jak format pliku, próbkowanie i jakość</string>
-    <string name="pref_summary_gapless_playback">"Może powodować problemy z odtwarzaniem na niektórych urządzeniach."</string>
     <string name="pref_summary_home_banner">Pokaż lub ukryj baner ekranu głównego</string>
     <string name="pref_summary_ignore_media_store_artwork">Może zwiększyć jakość okładki albumu, ale powoduje spowolnienie ładowania obrazu. Włącz tę opcję tylko jeśli masz problemy z okładkami o niskiej rozdzielczości.</string>
     <string name="pref_summary_library_categories">Dostosuj widoczność i kolejność kategorii bibliotek.</string>
@@ -365,6 +361,7 @@
     <string name="pref_summary_open_source_licences">Szczegóły licencji oprogramowania typu open source</string>
     <string name="pref_summary_pause_history">Gdy włączone, nowo odtworzone utwory nie będą wyświetlane w historii</string>
     <string name="pref_summary_remember_tab">Przejdź do ostatnio używanej zakładki przy starcie</string>
+    <string name="pref_summary_enable_search_playlist">Pokaż pole wyszukiwania na playlistach</string>
     <string name="pref_summary_show_lyrics">Wyświetla zsynchronizowane teksty piosenek nad okładką albumu</string>
     <string name="pref_summary_suggestions">Pokaż Nowy miks muzyki na ekranie głównym</string>
     <string name="pref_summary_swipe_anywhere_now_playing">Włącza możliwość zmiany utworu przesuwając w dowolnym miejscu na ekranie odtwarzania</string>
@@ -388,16 +385,15 @@
     <string name="pref_title_bluetooth_playback">Odtwarzanie przez Bluetooth</string>
     <string name="pref_title_blurred_album_art">Rozmyj okładkę albumu</string>
     <string name="pref_title_circle_button">Okrągły przycisk Odtwórz</string>
-    <string name="pref_title_classic_notification">Klasyczny wygląd powiadomień</string>
     <string name="pref_title_colored_app">Kolor adaptacyjny</string>
     <string name="pref_title_colored_notification">Kolorowe powiadomienia</string>
     <string name="pref_title_cross_fade">Płynne przejście (Beta)</string>
     <string name="pref_title_custom_font">Użyj czcionki Manrope</string>
     <string name="pref_title_desaturated_color">Mniej nasycony kolor</string>
+    <string name="pref_title_disable_speaker">Disable internal speaker</string>
     <string name="pref_title_expand_now_playing_panel">Wyświetl teraz odtwarzane</string>
     <string name="pref_title_extra_controls">Dodatkowe przyciski kontroli</string>
     <string name="pref_title_extra_song_info">Informacje o utworze</string>
-    <string name="pref_title_gapless_playback">Odtwarzanie bez przerw</string>
     <string name="pref_title_general_theme">Motyw aplikacji</string>
     <string name="pref_title_home_album_grid_style">Siatka albumu</string>
     <string name="pref_title_home_artist_grid_style">Siatka wykonawców</string>
@@ -412,6 +408,7 @@
     <string name="pref_title_open_source_licences">Licencje typu Open Source</string>
     <string name="pref_title_pause_history">Wstrzymaj historię</string>
     <string name="pref_title_remember_tab">Zapamiętaj ostatnią zakładkę</string>
+    <string name="pref_title_enable_search_playlist">Włącz wyszukiwanie w playliście</string>
     <string name="pref_title_show_lyrics">Pokaż teksty utworów</string>
     <string name="pref_title_suggestions">Pokaż sugestie</string>
     <string name="pref_title_swipe_anywhere_now_playing">Przesuń gdziekolwiek, aby zmienić utwór</string>
@@ -427,10 +424,9 @@
     <string name="pro">Pro</string>
     <string name="pro_summary">Czarny motyw, motywy teraz odtwarzanych, efekt karuzeli i wiele więcej..</string>
     <string name="profile">Profil</string>
-    <string name="purchase">Kup</string>
     <string name="queue">Kolejka odtwarzania</string>
     <string name="rate_app">Oceń aplikację</string>
-    <string name="rate_on_google_play_summary">Uwielbiasz tą aplikację? Daj nam znać w sklepie Google Play co o niej sądzisz i co powinniśmy poprawić.</string>
+    <string name="rate_app_summary">Share feedback or star the project on GitHub</string>
     <string name="recent_albums">Ostatnie albumy</string>
     <string name="recent_artists">Ostatni wykonawcy</string>
     <string name="remove_action">Usuń</string>
@@ -449,13 +445,12 @@
     <string name="reset_artist_image">Zresetuj grafikę wykonawcy</string>
     <string name="restore">Przywróć</string>
     <string name="restore_message">Czy chcesz przywrócić kopię zapasową?</string>
-    <string name="restored_previous_purchase_please_restart">Przywrócono poprzedni zakup. Zrestartuj aplikacje aby korzystać z wszystkich funkcji.</string>
-    <string name="restored_previous_purchases">Przywrócono poprzednie zakupy.</string>
-    <string name="restoring_purchase">Przywracanie zakupu...</string>
     <string name="retro_music_player">Odtwarzacz Retro Music</string>
     <string name="retro_music_pro">Retro Music Pro</string>
     <string name="ringtone_summary">Potrzebujemy uprawnień do ustawień Twojego urządzenia, aby ustawić utwór jako dzwonek</string>
     <string name="ringtone_title">Dzwonek (opcjonalny)</string>
+    <string name="permission_alarm_summary">Aplikacja potrzebuje uprawnień do planowania alarmów, aby ustawiać wyłączniki czasowe</string>
+    <string name="permission_alarm_title">Alarmy i przypomnienia (opcjonalne)</string>
     <string name="saf_delete_failed">Nie udało się usunąć pliku: %s</string>
     <!-- SAF -->
     <string name="saf_error_uri">Nie można uzyskać URI SAF</string>
@@ -506,7 +501,10 @@
     <string name="sort_order_num_songs">Liczba utworów</string>
     <string name="sort_order_num_songs_desc">Liczba utworów malejąco</string>
     <string name="sort_order_year">Rok</string>
+    <string name="sort_order_year_asc"></string>
+    <string name="sort_order_year_desc">Rok malejąco</string>
     <string name="sort_order_z_a">Malejąco</string>
+    <string name="speaker_disabled">Internal speaker playback is disabled</string>
     <string name="speech_not_supported">Twoje urządzenie nie obsługuje wprowadzania głosowego</string>
     <string name="speech_prompt">Przeszukaj swoją bibliotekę</string>
     <string name="stack">Stos</string>
@@ -562,4 +560,11 @@
     <string name="you_have_to_select_at_least_one_category">Zaznacz przynajmniej jedną kategorię</string>
     <string name="you_will_be_forwarded_to_the_issue_tracker_website">Zostaniesz przekierowany do strony ze zgłoszeniami.</string>
     <string name="your_account_data_is_only_used_for_authentication">Informacje o twoim koncie są używane tylko do autoryzacji.</string>
+    <string name="could_not_write_tags_to_file">Nie udało się przypisać tagów do pliku!</string>
+    <string name="sleep_timer_no_permission">Brak uprawnień do ustawiania alarmów, proszę zezwolić na to Retro Music.</string>
+    <string name="scanning_folders_files">Skanowanie folderów i plików…</string>
+    <string name="scan_complete">Skanowanie zakończone: Znaleziono %1$d elementów multimedialnych.</string>
+    <string name="pref_save_last_directory_summary">Podczas przełączania na widok folderu przywróć ostatnio używany katalog</string>
+    <string name="pref_save_last_directory_title">Zapisz ostatni katalog</string>
+    <string name="artist_separator_helper_text">To add multiple artists, separate them with: %1$s</string>
 </resources>

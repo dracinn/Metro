@@ -18,12 +18,8 @@ import android.animation.ValueAnimator
 import android.content.Context
 import androidx.core.animation.doOnEnd
 import androidx.lifecycle.*
-import code.name.monkey.retromusic.RECENT_ALBUMS
-import code.name.monkey.retromusic.RECENT_ARTISTS
-import code.name.monkey.retromusic.TOP_ALBUMS
-import code.name.monkey.retromusic.TOP_ARTISTS
-import code.name.monkey.retromusic.db.*
 import code.name.monkey.retromusic.*
+import code.name.monkey.retromusic.db.*
 import code.name.monkey.retromusic.extensions.showToast
 import code.name.monkey.retromusic.fragments.ReloadType.*
 import code.name.monkey.retromusic.fragments.search.Filter
@@ -36,6 +32,8 @@ import code.name.monkey.retromusic.util.PreferenceUtil
 import code.name.monkey.retromusic.util.logD
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -55,6 +53,7 @@ class LibraryViewModel(
     private val searchResults = MutableLiveData<List<Any>>()
     private val fabMargin = MutableLiveData(0)
     private val songHistory = MutableLiveData<List<Song>>()
+    private val playCountSongsData = MutableLiveData<List<Song>>()
     private var previousSongHistory = ArrayList<HistoryEntity>()
     val paletteColor: LiveData<Int> = _paletteColor
 
@@ -62,14 +61,18 @@ class LibraryViewModel(
         loadLibraryContent()
     }
 
-    private fun loadLibraryContent() = viewModelScope.launch(IO) {
-        fetchHomeSections()
-        fetchSuggestions()
-        fetchSongs()
-        fetchAlbums()
-        fetchArtists()
-        fetchGenres()
-        fetchPlaylists()
+    private fun loadLibraryContent() {
+        viewModelScope.launch(IO) {
+            fetchHomeSections()
+            awaitAll(
+                async { fetchSuggestions() },
+                async { fetchSongs() },
+                async { fetchAlbums() },
+                async { fetchArtists() },
+                async { fetchGenres() },
+                async { fetchPlaylists() },
+            )
+        }
     }
 
     fun getSearchResult(): LiveData<List<Any>> = searchResults
@@ -137,6 +140,7 @@ class LibraryViewModel(
             Playlists -> fetchPlaylists()
             Genres -> fetchGenres()
             Suggestions -> fetchSuggestions()
+            PlayCount -> fetchPlayCountSongs()
         }
     }
 
@@ -248,13 +252,22 @@ class LibraryViewModel(
         emit(repository.recentSongs())
     }
 
-    fun playCountSongs(): LiveData<List<Song>> = liveData(IO) {
+    fun playCountSongs(): LiveData<List<Song>> {
+        if (playCountSongsData.value == null) {
+            viewModelScope.launch(IO) {
+                fetchPlayCountSongs()
+            }
+        }
+        return playCountSongsData
+    }
+
+    private suspend fun fetchPlayCountSongs() {
         repository.playCountSongs().forEach { song ->
             if (!File(song.data).exists() || song.id == -1L) {
                 repository.deleteSongInPlayCount(song)
             }
         }
-        emit(repository.playCountSongs().map {
+        playCountSongsData.postValue(repository.playCountSongs().map {
             it.toSong()
         })
     }
@@ -279,6 +292,10 @@ class LibraryViewModel(
 
     fun artist(artistId: Long): LiveData<Artist> = liveData(IO) {
         emit(repository.artistById(artistId))
+    }
+
+    fun fetchContributors(): LiveData<List<Contributor>> = liveData(IO) {
+        emit(repository.contributor())
     }
 
     fun observableHistorySongs(): LiveData<List<Song>> {
@@ -333,8 +350,12 @@ class LibraryViewModel(
                     createPlaylist(PlaylistEntity(playlistName = playlistName))
                 insertSongs(songs.map { it.toSongEntity(playlistId) })
                 withContext(Main) {
-                    context.showToast(context.getString(R.string.playlist_created_sucessfully,
-                        playlistName))
+                    context.showToast(
+                        context.getString(
+                            R.string.playlist_created_sucessfully,
+                            playlistName
+                        )
+                    )
                 }
             } else {
                 val playlist = playlists.firstOrNull()
@@ -350,7 +371,9 @@ class LibraryViewModel(
                     context.getString(
                         R.string.added_song_count_to_playlist,
                         songs.size,
-                        playlistName))
+                        playlistName
+                    )
+                )
             }
         }
     }
@@ -379,5 +402,6 @@ enum class ReloadType {
     HomeSections,
     Playlists,
     Genres,
-    Suggestions
+    Suggestions,
+    PlayCount
 }

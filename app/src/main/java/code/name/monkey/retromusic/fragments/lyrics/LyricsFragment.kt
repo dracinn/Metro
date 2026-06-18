@@ -47,6 +47,7 @@ import code.name.monkey.retromusic.util.FileUtils
 import code.name.monkey.retromusic.util.LyricUtil
 import code.name.monkey.retromusic.util.UriUtil
 import com.afollestad.materialdialogs.input.input
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jaudiotagger.audio.AudioFileIO
@@ -196,6 +197,7 @@ class LyricsFragment : AbsMainActivityFragment(R.layout.fragment_lyrics),
     }
 
     @SuppressLint("CheckResult")
+    @OptIn(DelicateCoroutinesApi::class)
     private fun editNormalLyrics(lyrics: String? = null) {
         val file = File(song.data)
         val content = lyrics ?: try {
@@ -250,6 +252,7 @@ class LyricsFragment : AbsMainActivityFragment(R.layout.fragment_lyrics),
 
 
     @SuppressLint("CheckResult")
+    @OptIn(DelicateCoroutinesApi::class)
     private fun editSyncedLyrics(lyrics: String? = null) {
         val content = lyrics ?: LyricUtil.getStringFromLrc(LyricUtil.getSyncedLyricsFile(song))
 

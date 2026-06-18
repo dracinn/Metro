@@ -70,5 +70,7 @@ class App : Application() {
         fun getContext(): App {
             return instance!!
         }
+
+        fun isProVersion(): Boolean = true
     }
 }

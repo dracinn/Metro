@@ -1,19 +1,47 @@
-# Metro
+<p align="center">
+  <a href="https://github.com/dracinn/Metro">
+    <img src="app\src\main\ic_launcher-web.png" height="128">
+    <h1 align="center">Metro Music Player</h1>
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/RetroMusicPlayer/RetroMusicPlayer" style="text-decoration:none" area-label="Android">
+    <img src="https://img.shields.io/badge/Platform-Android-green.svg">
+  </a>
+  <a href="https://github.com/RetroMusicPlayer/RetroMusicPlayer/actions/workflows/android.yml" style="text-decoration:none" area-label="Build Status">
+    <img src="https://github.com/RetroMusicPlayer/RetroMusicPlayer/actions/workflows/android.yml/badge.svg">
+  </a>
+  <a href="https://github.com/RetroMusicPlayer/RetroMusicPlayer" style="text-decoration:none" area-label="Min API: 21">
+    <img src="https://img.shields.io/badge/minSdkVersion-21-green.svg">
+  </a>
+  <a href="https://f-droid.org/en/packages/io.github.muntashirakon.Music/" style="text-decoration:none" area-label="F-Droid">
+    <img src="https://img.shields.io/badge/Download-F--Droid-green.svg">
+  </a>
+  <a href="https://github.com/dracinn/Metro/blob/dev/LICENSE.md" style="text-decoration:none" area-label="License: GPL v3">
+    <img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg">
+  </a>
+  <a href="https://twitter.com/retromusicapp" style="text-decoration:none" area-label="Twitter Follow">
+    <img src="https://img.shields.io/twitter/follow/retromusicapp?style=social">
+  </a>
+  <a href="https://crowdin.com/project/retromusicplayer" style="text-decoration:none" area-label="Crowdin">
+    <img src="https://badges.crowdin.net/retromusicplayer/localized.svg">
+  </a>
 
-Material Design music player for Android music lovers
+</p>
 
-## Downloads
+Metro tracks Retro Music Player features while keeping the app libre, store-service-free, and pro features unlocked.
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/en/packages/io.github.muntashirakon.Music/)
+## 🆕 Material You Design Music Player for Android music lovers 
 
-## Differences between Metro and [RetroMusicPlayer](https://github.com/h4h13/RetroMusicPlayer)
-- Google Play libraries removed (fully libre)
-- Pro features available for free
-- Fully offline (INTERNET permission removed)
-- Bug fixes
-- Minor differences in UI
+## Download
+| F-Droid |
+|:-:|
+| [<img src="https://f-droid.org/badge/get-it-on.png" height="80">](https://f-droid.org/en/packages/io.github.muntashirakon.Music/) |
+
+or get it from the [GitHub Releases](https://github.com/RetroMusicPlayer/RetroMusicPlayer/releases).
+
+## ⚠ Join [@retromusiclog](https://telegram.me/retromusiclog) on Telegram for important updates.
+___
 
 ## 📱 Screenshots
 ### App Themes
@@ -45,7 +73,9 @@ Material Design music player for Android music lovers
 |:-----:	|:-----:	|:-----:	|:-----:	|:-----:	|
 | Classic 	| Adaptive 	| Blur 	| Tiny 	| Peek 	|
 
-## 🧭 Navigation never made easier 
+___
+
+## 🧭 Navigation never been made easier 
 Self-explanatory interface without overloaded menus.
 
 ## 🎨 Colorful
@@ -63,7 +93,7 @@ favorite songs. No other music player has this feature.
 -  Driving Mode
 -  Headset/Bluetooth support
 -  Music duration filter
--  Android auto support
+-  Android Auto support
 -  Wallpaper accent picker on Android 8.1+
 -  Material You support on Android 12+
 -  Monet themed icon support on Android 13+
@@ -80,18 +110,34 @@ favorite songs. No other music player has this feature.
 -  Create, edit and import playlists
 -  Playing queue with reorder
 -  User profile
--  30+ languages support
+-  30+ languages support (help translate the project: [Crowdin](https://crowdin.com/project/retromusicplayer)
 -  Browse and play your music by songs, albums, artists, playlists and
   genre
 -  Smart Auto Playlists - Recently played, most played and history
 -  Build your playlist on the go
 
-We are trying our best to bring you the best user experience. The app is regularly being updated for bug fixes and new features.
+We are trying our best to bring you the best user experience. The app is regularly updated for bug fixes and new features.
+
+___
+
+
+## ❓ FAQ
+Please read the FAQ [here](https://retromusic.app/faq.html)
+
+In any case, if you find or notice any bugs please report them by creating an issue or by contacting us in the [Telegram help & feedback group](https://t.me/retromusicapp).
+If you have any feature suggestions, please create an issue with detailed information or by contacting us in the [Telegram suggestions group](https://t.me/retro_music_suggestion).
+
+## 🔗 Social links
+**Telegram:** https://t.me/retromusicapp <br>
+**Crowdin**: https://crowdin.com/project/retromusicplayer <br>
+**Pinterest:** https://pinterest.com/retromusicapp <br>
+**Twitter:** https://twitter.com/retromusicapp <br>
 
 ## 🗂️ License
 
-Metro is released under the GNU General Public License v3.0
+Retro Music Player is released under the GNU General Public License v3.0
 (GPLv3), which can be found [here](LICENSE.md)
 
 
-> Please note: Metro is an offline music player app. It doesn't support music downloading or online music streaming.
+>Please note: Retro Music Player is a local music player app. It
+>doesn't support music downloading or online music streaming.

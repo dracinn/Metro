@@ -28,6 +28,7 @@ import code.name.monkey.retromusic.R
 import code.name.monkey.retromusic.databinding.FragmentLibraryBinding
 import code.name.monkey.retromusic.dialogs.CreatePlaylistDialog
 import code.name.monkey.retromusic.dialogs.ImportPlaylistDialog
+import code.name.monkey.retromusic.extensions.setUpMediaRouteButton
 import code.name.monkey.retromusic.extensions.whichFragment
 import code.name.monkey.retromusic.fragments.base.AbsMainActivityFragment
 import code.name.monkey.retromusic.model.CategoryInfo
@@ -41,10 +42,7 @@ class LibraryFragment : AbsMainActivityFragment(R.layout.fragment_library) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLibraryBinding.bind(view)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        
         mainActivity.setBottomNavVisibility(true)
         mainActivity.setSupportActionBar(binding.toolbar)
         mainActivity.supportActionBar?.title = null
@@ -92,6 +90,7 @@ class LibraryFragment : AbsMainActivityFragment(R.layout.fragment_library) {
             menu,
             getToolbarBackgroundColor(binding.toolbar)
         )
+        requireContext().setUpMediaRouteButton(menu)
     }
 
     override fun onMenuItemSelected(item: MenuItem): Boolean {

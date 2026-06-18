@@ -17,8 +17,10 @@ package code.name.monkey.retromusic.activities.tageditor
 import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -48,6 +50,7 @@ import code.name.monkey.retromusic.util.logD
 import code.name.monkey.retromusic.util.logE
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jaudiotagger.audio.AudioFile
@@ -349,8 +352,10 @@ abstract class AbsTagEditorActivity<VB : ViewBinding> : AbsBaseActivity() {
 
     protected open fun setColors(color: Int) {
         paletteColorPrimary = color
+        saveFab.backgroundTintList = ColorStateList.valueOf(if (color == 0) Color.GRAY else color)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     protected fun writeValuesToFiles(
         fieldKeyValueMap: Map<FieldKey, String>,
         artworkInfo: ArtworkInfo?
@@ -386,6 +391,7 @@ abstract class AbsTagEditorActivity<VB : ViewBinding> : AbsBaseActivity() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun writeTags(paths: List<String>?) {
         GlobalScope.launch {
             if (VersionUtils.hasR()) {

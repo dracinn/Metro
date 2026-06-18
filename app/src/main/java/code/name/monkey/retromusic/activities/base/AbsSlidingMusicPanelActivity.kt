@@ -19,7 +19,6 @@ import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.animation.doOnEnd
 import androidx.core.view.*
 import androidx.fragment.app.commit
+import androidx.navigation.fragment.NavHostFragment
 import code.name.monkey.appthemehelper.util.VersionUtils
 import code.name.monkey.retromusic.ADAPTIVE_COLOR_APP
 import code.name.monkey.retromusic.ALBUM_COVER_STYLE
@@ -106,11 +106,13 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
     private var miniPlayerFragment: MiniPlayerFragment? = null
     private var nowPlayingScreen: NowPlayingScreen? = null
     private var taskColor: Int = 0
-    private var paletteColor: Int = Color.WHITE
+    private var paletteColor: Int = android.graphics.Color.WHITE
     private var navigationBarColor = 0
 
     private val panelState: Int
         get() = bottomSheetBehavior.state
+    private var panelStateBefore: Int? = null
+    private var panelStateCurrent: Int? = null
     private lateinit var binding: SlidingMusicPanelLayoutBinding
     private var isInOneTabMode = false
 
@@ -119,10 +121,13 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            println("Handle back press ${bottomSheetBehavior.state}")
-            if (!handleBackPress()) {
-                remove()
-                onBackPressedDispatcher.onBackPressed()
+            if (handleBackPress()) {
+                return
+            }
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+            if (!navHostFragment.navController.navigateUp()) {
+                finish()
             }
         }
     }
@@ -143,7 +148,10 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                onBackPressedCallback.isEnabled = newState == STATE_EXPANDED
+                if (panelStateCurrent != null) {
+                    panelStateBefore = panelStateCurrent
+                }
+                panelStateCurrent = newState
                 when (newState) {
                     STATE_EXPANDED -> {
                         onPanelExpanded()
@@ -203,7 +211,7 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
 
         navigationBarColor = surfaceColor()
 
-        onBackPressedDispatcher.addCallback(onBackPressedCallback)
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     private fun setupBottomSheet() {
@@ -231,7 +239,7 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
         PreferenceUtil.unregisterOnSharedPreferenceChangedListener(this)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         when (key) {
             SWIPE_DOWN_DISMISS -> {
                 bottomSheetBehavior.isHideable = PreferenceUtil.swipeDownToDismiss
@@ -255,7 +263,7 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
 
             ALBUM_COVER_TRANSFORM, CAROUSEL_EFFECT,
             ALBUM_COVER_STYLE, TOGGLE_VOLUME, EXTRA_SONG_INFO, CIRCLE_PLAY_BUTTON,
-            -> {
+                -> {
                 chooseFragmentForTheme()
                 onServiceConnected()
             }
@@ -316,8 +324,10 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
     private fun animateNavigationBarColor(color: Int) {
         if (VersionUtils.hasOreo()) return
         navigationBarColorAnimator?.cancel()
+        @Suppress("DEPRECATION")
+        val currentNavigationBarColor = window.navigationBarColor
         navigationBarColorAnimator = ValueAnimator
-            .ofArgb(window.navigationBarColor, color).apply {
+            .ofArgb(currentNavigationBarColor, color).apply {
                 duration = ViewUtil.RETRO_MUSIC_ANIM_TIME.toLong()
                 interpolator = PathInterpolator(0.4f, 0f, 1f, 1f)
                 addUpdateListener { animation: ValueAnimator ->
@@ -387,7 +397,7 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
     }
 
     private fun handleBackPress(): Boolean {
-        if (panelState == STATE_EXPANDED) {
+        if (panelState == STATE_EXPANDED || (panelState == STATE_SETTLING && panelStateBefore != STATE_EXPANDED)) {
             collapsePanel()
             return true
         }
@@ -403,8 +413,8 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
                 setLightNavigationBar(true)
                 setLightStatusBar(isColorLight)
             } else if (nowPlayingScreen == Card || nowPlayingScreen == Blur || nowPlayingScreen == BlurCard) {
-                animateNavigationBarColor(Color.BLACK)
-                navigationBarColor = Color.BLACK
+                animateNavigationBarColor(android.graphics.Color.BLACK)
+                navigationBarColor = android.graphics.Color.BLACK
                 setLightStatusBar(false)
                 setLightNavigationBar(true)
             } else if (nowPlayingScreen == Color || nowPlayingScreen == Tiny || nowPlayingScreen == Gradient) {
@@ -462,7 +472,7 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
         animate: Boolean = false,
         hideBottomSheet: Boolean = MusicPlayerRemote.playingQueue.isEmpty(),
     ) {
-        if (!ViewCompat.isLaidOut(navigationView)) {
+        if (!navigationView.isLaidOut) {
             return
         }
         if (isInOneTabMode) {
@@ -504,7 +514,7 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
         val heightOfBar = windowInsets.getBottomInsets() + dip(R.dimen.mini_player_height)
         val heightOfBarWithTabs = heightOfBar + dip(R.dimen.bottom_nav_height)
         if (hide) {
-            bottomSheetBehavior.peekHeight = -windowInsets.getBottomInsets()
+            bottomSheetBehavior.peekHeight = (-windowInsets.getBottomInsets()).coerceAtLeast(0)
             bottomSheetBehavior.state = STATE_COLLAPSED
             libraryViewModel.setFabMargin(
                 this,

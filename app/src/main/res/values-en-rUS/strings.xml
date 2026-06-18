@@ -11,6 +11,7 @@
     <string name="action_add_to_playing_queue">Add to playing queue</string>
     <string name="action_add_to_playlist">Add to playlist</string>
     <string name="action_clear_playing_queue">Clear playing queue</string>
+    <string name="action_cast">Cast</string>
     <string name="action_cycle_repeat">Cycle repeat mode</string>
     <string name="action_delete">Delete</string>
     <string name="action_delete_from_device">Delete from device</string>
@@ -74,7 +75,7 @@
 
     <string name="always">Always</string>
 
-    <string name="app_share">Hey check out this cool music player at: https://play.google.com/store/apps/details?id=%s</string>
+    <string name="app_share">Hey check out this cool music player at: https://github.com/dracinn/Metro</string>
     <string name="app_shortcut_shuffle_all_short">Shuffle</string>
     <string name="app_shortcut_top_tracks_short">Top Tracks</string>
     <string name="app_widget_big_name">Big</string>
@@ -150,7 +151,6 @@
 
     <string name="could_not_create_playlist">Couldn\u2019t create playlist.</string>
     <string name="could_not_download_album_cover">"Couldn\u2019t download a matching album cover."</string>
-    <string name="could_not_restore_purchase">Could not restore purchase.</string>
     <string name="could_not_scan_files">Could not scan %d files.</string>
 
     <string name="create_action">Create</string>
@@ -187,7 +187,7 @@
     <string name="do_you_want_to_remove_from_the_blacklist"><![CDATA[Do you want to remove <b>%1$s</b> from the blacklist?]]></string>
 
     <string name="donate">Donate</string>
-    <string name="donate_summary">If you think I deserve to get paid for my work, you can leave some money here</string>
+    <string name="donate_summary">Support the project on GitHub</string>
 
     <string name="donation_header">Buy me a:</string>
 
@@ -251,7 +251,6 @@
 
     <string name="inserted_x_songs_into_playlist_x">Inserted %1$d songs into the playlist %2$s.</string>
 
-    <string name="instagram_page_summary">Share your Retro Music setup to showcase on Instagram</string>
 
     <string name="keyboard">Keyboard</string>
 
@@ -280,7 +279,6 @@
 
     <string name="listing_files">Listing files</string>
 
-    <string name="loading_products">Loading products…</string>
 
     <string name="login">Login</string>
 
@@ -311,7 +309,6 @@
     <string name="no_lyrics_found">No lyrics found</string>
     <string name="no_playing_queue">No songs playing</string>
     <string name="no_playlists">You have no playlists</string>
-    <string name="no_purchase_found">No purchase found.</string>
     <string name="no_results">No results</string>
     <string name="no_songs">You have no songs</string>
 
@@ -323,8 +320,6 @@
     <string name="nothing_to_scan">Nothing to scan.</string>
     <string name="nothing_to_see">Nothing to see</string>
 
-    <string name="notification">Notification</string>
-    <string name="notification_settings_summary">Customize the notification style</string>
 
     <string name="now_playing">Now playing</string>
     <string name="now_playing_queue">Now playing queue</string>
@@ -390,7 +385,6 @@
     <string name="pref_summary_bluetooth_playback">Start playing as soon as connected to bluetooth device</string>
     <string name="pref_summary_blurred_album_art">Blur the album cover on the lockscreen. Can cause problems with third party apps and widgets</string>
     <string name="pref_summary_carousel_effect">Carousel effect for the album art in the now playing screen. Note that Card and Blur Card themes won\'t work</string>
-    <string name="pref_summary_classic_notification">Use the classic notification design</string>
     <string name="pref_summary_colored_app">The background and control button colors change according to the album art from the now playing screen</string>
     <string name="pref_summary_colored_app_shortcuts">Colors the app shortcuts in the accent color. Every time you change the color please toggle this to take effect</string>
     <string name="pref_summary_colored_notification">"Colors the notification in the album cover\u2019s vibrant color"</string>
@@ -398,7 +392,6 @@
     <string name="pref_summary_expand_now_playing_panel">Clicking on the notification will show now playing screen instead of the home screen</string>
     <string name="pref_summary_extra_controls">Add extra controls for mini player</string>
     <string name="pref_summary_extra_song_info">Show extra Song information, such as file format, bitrate and frequency</string>
-    <string name="pref_summary_gapless_playback">"Can cause playback issues on some devices."</string>
     <string name="pref_summary_home_banner">Show or hide the home banner</string>
     <string name="pref_summary_ignore_media_store_artwork">Can increase the album cover quality, but causes slower image loading times. Only enable this if you have problems with low resolution artworks</string>
     <string name="pref_summary_library_categories">Configure visibility and order of library categories.</string>
@@ -417,14 +410,12 @@
     <string name="pref_title_blacklist">Blacklist</string>
     <string name="pref_title_bluetooth_playback">Bluetooth playback</string>
     <string name="pref_title_blurred_album_art">Blur album cover</string>
-    <string name="pref_title_classic_notification">Classic notification design</string>
     <string name="pref_title_colored_app">Adaptive color</string>
     <string name="pref_title_colored_notification">Colored notification</string>
     <string name="pref_title_desaturated_color">Desaturated color</string>
     <string name="pref_title_expand_now_playing_panel">Show now playing screen</string>
     <string name="pref_title_extra_controls">Extra controls</string>
     <string name="pref_title_extra_song_info">Song info</string>
-    <string name="pref_title_gapless_playback">Gapless playback</string>
     <string name="pref_title_general_theme">App theme</string>
     <string name="pref_title_home_artist_grid_style">Artist grid</string>
     <string name="pref_title_home_banner">Banner</string>
@@ -445,12 +436,11 @@
 
     <string name="profile">Profile</string>
 
-    <string name="purchase">Purchase</string>
 
     <string name="queue">Playing Queue</string>
 
     <string name="rate_app">Rate the app</string>
-    <string name="rate_on_google_play_summary">Love this app? Let us know in the Google Play Store how we can make it even better</string>
+    <string name="rate_app_summary">Share feedback or star the project on GitHub</string>
 
     <string name="recent_albums">Recent albums</string>
     <string name="recent_artists">Recent artists</string>
@@ -473,10 +463,7 @@
 
     <string name="restore">Restore</string>
 
-    <string name="restored_previous_purchase_please_restart">Restored previous purchase. Please restart the app to make use of all features.</string>
-    <string name="restored_previous_purchases">Restored previous purchases.</string>
 
-    <string name="restoring_purchase">Restoring purchase…</string>
 
     <string name="retro_music_player">Retro Music Player</string>
     <string name="retro_music_pro">Retro Music Pro</string>

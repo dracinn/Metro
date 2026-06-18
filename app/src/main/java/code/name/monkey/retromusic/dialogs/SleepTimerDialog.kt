@@ -19,9 +19,11 @@ import android.app.Dialog
 import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.SystemClock
+import android.provider.Settings
 import android.widget.CheckBox
 import android.widget.SeekBar
 import android.widget.TextView
@@ -98,24 +100,22 @@ class SleepTimerDialog : DialogFragment() {
                 setNegativeButton(R.string.action_cancel) { _, _ ->
                     timerUpdater.cancel()
                     val previous = makeTimerPendingIntent(PendingIntent.FLAG_NO_CREATE)
-                    if (previous != null) {
-                        val am = requireContext().getSystemService<AlarmManager>()
-                        am?.cancel(previous)
-                        previous.cancel()
+                    val am = requireContext().getSystemService<AlarmManager>()
+                    am?.cancel(previous)
+                    previous.cancel()
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().resources.getString(R.string.sleep_timer_canceled),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val musicService = MusicPlayerRemote.musicService
+                    if (musicService != null && musicService.pendingQuit) {
+                        musicService.pendingQuit = false
                         Toast.makeText(
                             requireContext(),
                             requireContext().resources.getString(R.string.sleep_timer_canceled),
                             Toast.LENGTH_SHORT
                         ).show()
-                        val musicService = MusicPlayerRemote.musicService
-                        if (musicService != null && musicService.pendingQuit) {
-                            musicService.pendingQuit = false
-                            Toast.makeText(
-                                requireContext(),
-                                requireContext().resources.getString(R.string.sleep_timer_canceled),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
                     }
                 }
             } else {
@@ -129,17 +129,28 @@ class SleepTimerDialog : DialogFragment() {
                         SystemClock.elapsedRealtime() + minutes * 60 * 1000
                     PreferenceUtil.nextSleepTimerElapsedRealTime = nextSleepTimerElapsedTime.toInt()
                     val am = requireContext().getSystemService<AlarmManager>()
-                    am?.setExact(
-                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        nextSleepTimerElapsedTime,
-                        pi
-                    )
 
-                    Toast.makeText(
-                        requireContext(),
-                        requireContext().resources.getString(R.string.sleep_timer_set, minutes),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    @Suppress("KotlinConstantConditions")
+                    if (VersionUtils.hasS() && am?.canScheduleExactAlarms() != true) {
+                        Toast.makeText(
+                            requireContext(),
+                            requireContext().resources.getString(R.string.sleep_timer_no_permission),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                        startActivity(intent)
+                    } else {
+                        am?.setExact(
+                           AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                           nextSleepTimerElapsedTime,
+                           pi
+                       )
+                        Toast.makeText(
+                            requireContext(),
+                            requireContext().resources.getString(R.string.sleep_timer_set, minutes),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
             setView(binding.root)
@@ -153,11 +164,9 @@ class SleepTimerDialog : DialogFragment() {
         timerDisplay.text = "$seekArcProgress min"
     }
 
-    private fun makeTimerPendingIntent(flag: Int): PendingIntent? {
+    private fun makeTimerPendingIntent(flag: Int): PendingIntent {
         return PendingIntent.getService(
-            requireActivity(), 0, makeTimerIntent(), flag or if (VersionUtils.hasMarshmallow())
-                PendingIntent.FLAG_IMMUTABLE
-            else 0
+            requireActivity(), 0, makeTimerIntent(), flag or PendingIntent.FLAG_IMMUTABLE
         )
     }
 

@@ -22,7 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.contains
 import androidx.navigation.ui.setupWithNavController
 import code.name.monkey.retromusic.R
-import code.name.monkey.retromusic.activities.base.AbsSlidingMusicPanelActivity
+import code.name.monkey.retromusic.activities.base.AbsCastActivity
 import code.name.monkey.retromusic.extensions.*
 import code.name.monkey.retromusic.helper.MusicPlayerRemote
 import code.name.monkey.retromusic.helper.SearchQueryHelper.getSongs
@@ -37,7 +37,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 
-class MainActivity : AbsSlidingMusicPanelActivity() {
+class MainActivity : AbsCastActivity() {
     companion object {
         const val TAG = "MainActivity"
         const val EXPAND_PANEL = "expand_panel"
@@ -115,9 +115,6 @@ class MainActivity : AbsSlidingMusicPanelActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean =
-        findNavController(R.id.fragment_container).navigateUp()
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         val expand = intent?.extra<Boolean>(EXPAND_PANEL)?.value ?: false
@@ -135,6 +132,7 @@ class MainActivity : AbsSlidingMusicPanelActivity() {
         handlePlaybackIntent(intent)
     }
 
+    @Suppress("deprecation")
     private fun handlePlaybackIntent(intent: Intent) {
         lifecycleScope.launch(IO) {
             val uri: Uri? = intent.data

@@ -33,25 +33,32 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.navigation.navOptions
 import androidx.viewpager.widget.ViewPager
 import code.name.monkey.appthemehelper.util.VersionUtils
 import code.name.monkey.retromusic.EXTRA_ALBUM_ID
 import code.name.monkey.retromusic.EXTRA_ARTIST_ID
-import code.name.monkey.retromusic.extensions.hide
 import code.name.monkey.retromusic.R
 import code.name.monkey.retromusic.activities.MainActivity
 import code.name.monkey.retromusic.activities.tageditor.AbsTagEditorActivity
 import code.name.monkey.retromusic.activities.tageditor.SongTagEditorActivity
 import code.name.monkey.retromusic.db.PlaylistEntity
 import code.name.monkey.retromusic.db.toSongEntity
-import code.name.monkey.retromusic.dialogs.*
+import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog
+import code.name.monkey.retromusic.dialogs.CreatePlaylistDialog
+import code.name.monkey.retromusic.dialogs.DeleteSongsDialog
+import code.name.monkey.retromusic.dialogs.PlaybackSpeedDialog
+import code.name.monkey.retromusic.dialogs.SleepTimerDialog
+import code.name.monkey.retromusic.dialogs.SongDetailDialog
+import code.name.monkey.retromusic.dialogs.SongShareDialog
+import code.name.monkey.retromusic.extensions.currentFragment
 import code.name.monkey.retromusic.extensions.getTintedDrawable
+import code.name.monkey.retromusic.extensions.hide
+import code.name.monkey.retromusic.extensions.keepScreenOn
 import code.name.monkey.retromusic.extensions.showToast
 import code.name.monkey.retromusic.extensions.whichFragment
-import code.name.monkey.retromusic.dialogs.*
-import code.name.monkey.retromusic.extensions.*
 import code.name.monkey.retromusic.fragments.LibraryViewModel
 import code.name.monkey.retromusic.fragments.NowPlayingScreen
 import code.name.monkey.retromusic.fragments.ReloadType
@@ -278,7 +285,8 @@ abstract class AbsPlayerFragment(@LayoutRes layout: Int) : AbsMusicServiceFragme
                 libraryViewModel.insertSongs(listOf(song.toSongEntity(playlist.playListId)))
             }
             libraryViewModel.forceReload(ReloadType.Playlists)
-            requireContext().sendBroadcast(Intent(MusicService.FAVORITE_STATE_CHANGED))
+            LocalBroadcastManager.getInstance(requireContext())
+                .sendBroadcast(Intent(MusicService.FAVORITE_STATE_CHANGED))
         }
     }
 
@@ -287,7 +295,7 @@ abstract class AbsPlayerFragment(@LayoutRes layout: Int) : AbsMusicServiceFragme
             val isFavorite: Boolean =
                 libraryViewModel.isSongFavorite(MusicPlayerRemote.currentSong.id)
             withContext(Main) {
-                val icon = if (animate && VersionUtils.hasMarshmallow()) {
+                val icon = if (animate) {
                     if (isFavorite) R.drawable.avd_favorite else R.drawable.avd_unfavorite
                 } else {
                     if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
@@ -332,8 +340,7 @@ abstract class AbsPlayerFragment(@LayoutRes layout: Int) : AbsMusicServiceFragme
         playerAlbumCoverFragment = whichFragment(R.id.playerAlbumCoverFragment)
         playerAlbumCoverFragment?.setCallbacks(this)
 
-        if (VersionUtils.hasMarshmallow())
-            view.findViewById<RelativeLayout>(R.id.statusBarShadow)?.hide()
+        view.findViewById<RelativeLayout>(R.id.statusBarShadow)?.hide()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -374,7 +381,7 @@ abstract class AbsPlayerFragment(@LayoutRes layout: Int) : AbsMusicServiceFragme
             context,
             object : GestureDetector.SimpleOnGestureListener() {
                 override fun onScroll(
-                    e1: MotionEvent,
+                    e1: MotionEvent?,
                     e2: MotionEvent,
                     distanceX: Float,
                     distanceY: Float,

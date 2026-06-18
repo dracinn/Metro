@@ -15,6 +15,11 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
 import com.afollestad.materialdialogs.list.updateListItems
 import java.io.File
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.text.TextWatcher
+import android.text.Editable
+import com.afollestad.materialdialogs.customview.customView
 
 class BlacklistFolderChooserDialog : DialogFragment() {
     private var initialPath: String = getExternalStorageDirectory().absolutePath
@@ -22,6 +27,7 @@ class BlacklistFolderChooserDialog : DialogFragment() {
     private var parentContents: Array<File>? = null
     private var canGoUp = false
     private var callback: FolderCallback? = null
+    private var editText: EditText? = null
     private val contentsArray: Array<String?>
         get() {
             if (parentContents == null) {
@@ -50,8 +56,19 @@ class BlacklistFolderChooserDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var mSavedInstanceState = savedInstanceState
-        if (VersionUtils.hasMarshmallow()
-            && ActivityCompat.checkSelfPermission(
+        if (VersionUtils.hasT()) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireActivity(), Manifest.permission.READ_MEDIA_AUDIO
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                return materialDialog().show {
+                    title(res = R.string.md_error_label)
+                    message(res = R.string.made_with_love)
+                    positiveButton(res = android.R.string.ok)
+                }
+            }
+        } else if (ActivityCompat.checkSelfPermission(
                 requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE
             )
             != PackageManager.PERMISSION_GRANTED
@@ -71,8 +88,38 @@ class BlacklistFolderChooserDialog : DialogFragment() {
         parentFolder = File(mSavedInstanceState.getString("current_path", File.pathSeparator))
         checkIfCanGoUp()
         parentContents = listFiles()
+
+        editText = EditText(requireContext()).apply {
+            hint = "Enter full path here"
+            val padding = 40
+            setPadding(padding, padding, padding, padding)
+        }
+        val params = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.leftMargin = 60
+        params.rightMargin = 60
+        editText?.layoutParams = params
+        editText?.setText(parentFolder?.absolutePath)
+        editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                var currentValue = s.toString()
+                parentFolder = File(currentValue)
+                if (canAccessFolder(currentValue)){
+                    updateDialog()
+                }
+            }
+        })
+
         return materialDialog()
-            .title(text = parentFolder?.absolutePath)
+            .customView(view = editText)
             .listItems(
                 items = contentsArray.toCharSequence(),
                 waitForPositiveButton = false
@@ -108,11 +155,20 @@ class BlacklistFolderChooserDialog : DialogFragment() {
         canGoUp = parentFolder?.parent != null
     }
 
-    private fun reload() {
+    private fun canAccessFolder(path: String): Boolean {
+        val folder = File(path)
+        return folder.exists() && folder.isDirectory && folder.canRead()
+    }
+
+    private fun updateDialog() {
         parentContents = listFiles()
         val dialog = dialog as MaterialDialog?
-        dialog?.setTitle(parentFolder?.absolutePath)
         dialog?.updateListItems(items = contentsArray.toCharSequence())
+    }
+
+    private fun reload() {
+        editText?.setText(parentFolder?.absolutePath)
+        updateDialog()
     }
 
     private fun Array<String?>.toCharSequence(): List<CharSequence> {

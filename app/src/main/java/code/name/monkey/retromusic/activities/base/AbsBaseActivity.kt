@@ -14,6 +14,7 @@
  */
 package code.name.monkey.retromusic.activities.base
 
+import android.annotation.SuppressLint
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -69,9 +70,7 @@ abstract class AbsBaseActivity : AbsThemeActivity() {
         val hasPermissions = hasPermissions()
         if (hasPermissions != hadPermissions) {
             hadPermissions = hasPermissions
-            if (VersionUtils.hasMarshmallow()) {
-                onHasPermissionsChanged(hasPermissions)
-            }
+            onHasPermissionsChanged(hasPermissions)
         }
     }
 
@@ -106,6 +105,7 @@ abstract class AbsBaseActivity : AbsThemeActivity() {
         return true
     }
 
+    @SuppressLint("InlinedApi")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,

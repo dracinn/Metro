@@ -27,6 +27,7 @@ import code.name.monkey.retromusic.R
 import code.name.monkey.retromusic.extensions.showToast
 import code.name.monkey.retromusic.model.Song
 import code.name.monkey.retromusic.repository.SongRepository
+import code.name.monkey.retromusic.service.CastPlayer
 import code.name.monkey.retromusic.service.MusicService
 import code.name.monkey.retromusic.util.getExternalStorageDirectory
 import code.name.monkey.retromusic.util.logE
@@ -111,7 +112,7 @@ object MusicPlayerRemote : KoinComponent {
 
     fun bindToService(context: Context, callback: ServiceConnection): ServiceToken? {
 
-        val realActivity = (context as Activity).parent ?: context
+        val realActivity = context as Activity
         val contextWrapper = ContextWrapper(realActivity)
         val intent = Intent(contextWrapper, MusicService::class.java)
 
@@ -210,14 +211,7 @@ object MusicPlayerRemote : KoinComponent {
      */
     @JvmStatic
     fun openQueue(queue: List<Song>, startPosition: Int, startPlaying: Boolean) {
-        if (!tryToHandleOpenPlayingQueue(
-                queue,
-                startPosition,
-                startPlaying
-            ) && musicService != null
-        ) {
-            musicService?.openQueue(queue, startPosition, startPlaying)
-        }
+        doOpenQueue(queue, startPosition, startPlaying, MusicService.SHUFFLE_MODE_NONE)
     }
 
     @JvmStatic
@@ -227,14 +221,23 @@ object MusicPlayerRemote : KoinComponent {
             startPosition = Random().nextInt(queue.size)
         }
 
+        doOpenQueue(queue, startPosition, startPlaying, MusicService.SHUFFLE_MODE_SHUFFLE)
+    }
+
+    @JvmStatic
+    fun openQueueKeepShuffleMode(queue: List<Song>, startPosition: Int, startPlaying: Boolean) {
+        doOpenQueue(queue, startPosition, startPlaying, shuffleMode)
+    }
+
+    private fun doOpenQueue(queue: List<Song>, startPosition: Int, startPlaying: Boolean, shuffleMode: Int) {
         if (!tryToHandleOpenPlayingQueue(
                 queue,
                 startPosition,
                 startPlaying
             ) && musicService != null
         ) {
-            openQueue(queue, startPosition, startPlaying)
-            setShuffleMode(MusicService.SHUFFLE_MODE_SHUFFLE)
+            musicService?.openQueue(queue, startPosition, startPlaying)
+            setShuffleMode(shuffleMode)
         }
     }
 
@@ -452,6 +455,14 @@ object MusicPlayerRemote : KoinComponent {
     private fun getSongIdFromMediaProvider(uri: Uri): String {
         return DocumentsContract.getDocumentId(uri).split(":".toRegex())
             .dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+    }
+
+    fun switchToRemotePlayback(castPlayer: CastPlayer) {
+        musicService?.switchToRemotePlayback(castPlayer)
+    }
+
+    fun switchToLocalPlayback() {
+        musicService?.switchToLocalPlayback()
     }
 
     class ServiceBinder internal constructor(private val mCallback: ServiceConnection?) :
