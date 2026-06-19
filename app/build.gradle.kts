@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
     namespace = "code.name.monkey.retromusic"
 
     defaultConfig {
