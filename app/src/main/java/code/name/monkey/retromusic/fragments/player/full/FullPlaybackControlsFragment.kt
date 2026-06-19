@@ -143,7 +143,7 @@ class FullPlaybackControlsFragment :
         binding.songTotalTime.setTextColor(secondaryControlsColor)
 
         if (PreferenceUtil.liquidGlass) {
-            binding.playPauseButton.backgroundTintList = ColorStateList.valueOf(Color.WHITE.addAlpha(0.18f))
+            binding.playPauseButton.backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
             binding.playPauseButton.imageTintList = tintList
         } else {
             binding.playPauseButton.backgroundTintList = tintList
@@ -207,36 +207,41 @@ class FullPlaybackControlsFragment :
 
     private fun applyLiquidGlassConcept() {
         val density = resources.displayMetrics.density
-        val horizontalMargin = (18f * density).roundToInt()
-        val glassBottomMargin = (16f * density).roundToInt()
+        binding.root.setLiquidGlassEnabled(false)
         binding.root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            marginStart = horizontalMargin
-            marginEnd = horizontalMargin
-            bottomMargin = glassBottomMargin
+            marginStart = 0
+            marginEnd = 0
+            bottomMargin = 0
         }
         binding.root.updatePadding(
-            left = (8f * density).roundToInt(),
-            top = (18f * density).roundToInt(),
-            right = (8f * density).roundToInt(),
-            bottom = (8f * density).roundToInt(),
+            left = (16f * density).roundToInt(),
+            top = (12f * density).roundToInt(),
+            right = (16f * density).roundToInt(),
+            bottom = (16f * density).roundToInt(),
         )
 
         listOf(
-            binding.playerMenu,
-            binding.songFavourite,
             binding.repeatButton,
             binding.previousButton,
             binding.nextButton,
             binding.shuffleButton,
         ).forEach { button ->
-            button.background = LiquidGlassDrawable(requireContext(), 26f * density)
+            button.background = null
             button.imageTintList = ColorStateList.valueOf(Color.WHITE)
-            button.elevation = 8f * density
+            button.elevation = 0f
+            button.alpha = 0.92f
         }
 
-        binding.playPauseButton.backgroundTintList = ColorStateList.valueOf(Color.WHITE.addAlpha(0.18f))
+        listOf(binding.playerMenu, binding.songFavourite).forEach { button ->
+            button.background = LiquidGlassDrawable(requireContext(), 24f * density)
+            button.imageTintList = ColorStateList.valueOf(Color.WHITE)
+            button.elevation = 6f * density
+        }
+
+        binding.playPauseButton.customSize = (56f * density).roundToInt()
+        binding.playPauseButton.backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
         binding.playPauseButton.imageTintList = ColorStateList.valueOf(Color.WHITE)
-        binding.playPauseButton.compatElevation = 10f * density
+        binding.playPauseButton.compatElevation = 0f
         binding.progressSlider.applyColor(Color.WHITE)
     }
 

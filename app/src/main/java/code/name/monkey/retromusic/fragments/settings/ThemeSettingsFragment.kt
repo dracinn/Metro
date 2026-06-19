@@ -15,13 +15,9 @@ package code.name.monkey.retromusic.fragments.settings
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.edit
-import androidx.core.view.children
 import androidx.preference.Preference
 import androidx.preference.TwoStatePreference
-import androidx.recyclerview.widget.RecyclerView
 import code.name.monkey.appthemehelper.ACCENT_COLORS
 import code.name.monkey.appthemehelper.ACCENT_COLORS_SUB
 import code.name.monkey.appthemehelper.ThemeStore
@@ -34,7 +30,6 @@ import code.name.monkey.retromusic.appshortcuts.DynamicShortcutManager
 import code.name.monkey.retromusic.extensions.materialDialog
 import code.name.monkey.retromusic.fragments.NowPlayingScreen.*
 import code.name.monkey.retromusic.util.PreferenceUtil
-import code.name.monkey.retromusic.views.LiquidGlassConstraintLayout
 import com.afollestad.materialdialogs.color.colorChooser
 import com.google.android.material.color.DynamicColors
 
@@ -43,14 +38,6 @@ import com.google.android.material.color.DynamicColors
  */
 
 class ThemeSettingsFragment : AbsSettingsFragment() {
-
-    private val rowGlassDisabler = object : RecyclerView.OnChildAttachStateChangeListener {
-        override fun onChildViewAttachedToWindow(view: View) {
-            view.disableLiquidGlassRows()
-        }
-
-        override fun onChildViewDetachedFromWindow(view: View) = Unit
-    }
 
     @SuppressLint("CheckResult")
     override fun invalidateSettings() {
@@ -155,25 +142,5 @@ class ThemeSettingsFragment : AbsSettingsFragment() {
         addPreferencesFromResource(R.xml.pref_general)
         val wallpaperAccent: ATESwitchPreference? = findPreference(WALLPAPER_ACCENT)
         wallpaperAccent?.isVisible = VersionUtils.hasOreoMR1() && !VersionUtils.hasS()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        listView.addOnChildAttachStateChangeListener(rowGlassDisabler)
-        listView.children.forEach { it.disableLiquidGlassRows() }
-    }
-
-    override fun onDestroyView() {
-        listView.removeOnChildAttachStateChangeListener(rowGlassDisabler)
-        super.onDestroyView()
-    }
-
-    private fun View.disableLiquidGlassRows() {
-        if (this is LiquidGlassConstraintLayout) {
-            setLiquidGlassEnabled(false)
-        }
-        if (this is ViewGroup) {
-            children.forEach { it.disableLiquidGlassRows() }
-        }
     }
 }
