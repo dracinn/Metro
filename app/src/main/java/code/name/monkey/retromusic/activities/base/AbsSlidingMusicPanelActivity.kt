@@ -80,6 +80,7 @@ import code.name.monkey.retromusic.model.CategoryInfo
 import code.name.monkey.retromusic.util.PreferenceUtil
 import code.name.monkey.retromusic.util.ViewUtil
 import code.name.monkey.retromusic.util.logD
+import code.name.monkey.retromusic.views.LiquidGlassDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -208,6 +209,7 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
             binding.slidingPanel.backgroundTintList = ColorStateList.valueOf(darkAccentColor())
             navigationView.backgroundTintList = ColorStateList.valueOf(darkAccentColor())
         }
+        applyLiquidGlassSurfaces()
 
         navigationBarColor = surfaceColor()
 
@@ -220,6 +222,11 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
         bottomSheetBehavior.isHideable = PreferenceUtil.swipeDownToDismiss
         bottomSheetBehavior.significantVelocityThreshold = 300
         setMiniPlayerAlphaProgress(0F)
+    }
+
+    private fun applyLiquidGlassSurfaces() {
+        binding.navigationView.backgroundTintList = null
+        binding.navigationView.background = LiquidGlassDrawable(this)
     }
 
     override fun onResume() {
