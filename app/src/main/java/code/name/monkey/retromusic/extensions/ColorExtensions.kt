@@ -38,13 +38,16 @@ import code.name.monkey.appthemehelper.util.ATHUtil
 import code.name.monkey.appthemehelper.util.ColorUtil
 import code.name.monkey.appthemehelper.util.MaterialValueHelper
 import code.name.monkey.retromusic.R
+import code.name.monkey.retromusic.util.PreferenceUtil
 import code.name.monkey.retromusic.util.PreferenceUtil.materialYou
+import code.name.monkey.retromusic.views.LiquidGlassDrawable
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputLayout
+import kotlin.math.roundToInt
 
 fun Int.ripAlpha(): Int {
     return ColorUtil.stripAlpha(this)
@@ -135,6 +138,7 @@ fun Button.accentTextColor() {
 }
 
 fun MaterialButton.accentBackgroundColor() {
+    if (applyLiquidGlassButton(context.colorControlNormal())) return
     if (materialYou) return
     backgroundTintList = ColorStateList(
         arrayOf(intArrayOf(android.R.attr.state_enabled), intArrayOf()),
@@ -142,6 +146,7 @@ fun MaterialButton.accentBackgroundColor() {
 }
 
 fun MaterialButton.accentOutlineColor() {
+    if (applyLiquidGlassButton(ThemeStore.accentColor(context))) return
     if (materialYou) return
     val color = ThemeStore.accentColor(context)
     val colorStateList = ColorStateList.valueOf(color)
@@ -152,6 +157,7 @@ fun MaterialButton.accentOutlineColor() {
 }
 
 fun MaterialButton.elevatedAccentColor() {
+    if (applyLiquidGlassButton(context.colorControlNormal())) return
     if (materialYou) return
     val color = context.darkAccentColorVariant()
     rippleColor = ColorStateList.valueOf(color)
@@ -176,6 +182,7 @@ fun Slider.applyColor(@ColorInt color: Int) {
 }
 
 fun ExtendedFloatingActionButton.accentColor() {
+    if (applyLiquidGlassButton(context.colorControlNormal())) return
     if (materialYou) return
     val color = ThemeStore.accentColor(context)
     val textColor = MaterialValueHelper.getPrimaryTextColor(context, ColorUtil.isColorLight(color))
@@ -187,6 +194,7 @@ fun ExtendedFloatingActionButton.accentColor() {
 }
 
 fun FloatingActionButton.accentColor() {
+    if (applyLiquidGlassFab()) return
     if (materialYou) return
     val color = ThemeStore.accentColor(context)
     val textColor = MaterialValueHelper.getPrimaryTextColor(context, ColorUtil.isColorLight(color))
@@ -202,6 +210,7 @@ fun ProgressBar.accentColor() {
 }
 
 fun MaterialButton.applyColor(color: Int) {
+    if (applyLiquidGlassButton(color)) return
     val backgroundColorStateList = ColorStateList.valueOf(color)
     val textColorColorStateList = ColorStateList.valueOf(
         MaterialValueHelper.getPrimaryTextColor(
@@ -221,11 +230,48 @@ fun MaterialButton.accentColor() {
 
 
 fun MaterialButton.applyOutlineColor(color: Int) {
+    if (applyLiquidGlassButton(color)) return
     val colorStateList = ColorStateList.valueOf(color)
     iconTint = colorStateList
     strokeColor = colorStateList
     setTextColor(colorStateList)
     rippleColor = colorStateList
+}
+
+private fun MaterialButton.applyLiquidGlassButton(contentColor: Int): Boolean {
+    if (!PreferenceUtil.liquidGlass) return false
+    val colorStateList = ColorStateList.valueOf(contentColor)
+    backgroundTintList = null
+    background = LiquidGlassDrawable(context, 18f * resources.displayMetrics.density)
+    strokeColor = ColorStateList.valueOf(Color.WHITE.addAlpha(0.34f))
+    strokeWidth = resources.displayMetrics.density.roundToInt().coerceAtLeast(1)
+    rippleColor = colorStateList
+    setTextColor(colorStateList)
+    iconTint = colorStateList
+    elevation = 8f * resources.displayMetrics.density
+    return true
+}
+
+private fun ExtendedFloatingActionButton.applyLiquidGlassButton(contentColor: Int): Boolean {
+    if (!PreferenceUtil.liquidGlass) return false
+    val colorStateList = ColorStateList.valueOf(contentColor)
+    backgroundTintList = null
+    background = LiquidGlassDrawable(context, 24f * resources.displayMetrics.density)
+    rippleColor = colorStateList
+    setTextColor(colorStateList)
+    iconTint = colorStateList
+    elevation = 8f * resources.displayMetrics.density
+    return true
+}
+
+private fun FloatingActionButton.applyLiquidGlassFab(): Boolean {
+    if (!PreferenceUtil.liquidGlass) return false
+    backgroundTintList = ColorStateList.valueOf(
+        ColorUtils.blendARGB(context.surfaceColor(), Color.WHITE, 0.18f).addAlpha(0.72f)
+    )
+    imageTintList = ColorStateList.valueOf(context.colorControlNormal())
+    compatElevation = 8f * resources.displayMetrics.density
+    return true
 }
 
 fun TextInputLayout.accentColor() {

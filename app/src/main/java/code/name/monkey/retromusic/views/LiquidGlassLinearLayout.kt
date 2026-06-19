@@ -6,6 +6,7 @@
 package code.name.monkey.retromusic.views
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
@@ -17,12 +18,24 @@ class LiquidGlassLinearLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+    private val defaultBackground: Drawable? = background
+    private val defaultElevation = elevation
+    private val defaultTranslationZ = ViewCompat.getTranslationZ(this)
+
     init {
-        if (PreferenceUtil.liquidGlass) {
+        setLiquidGlassEnabled(PreferenceUtil.liquidGlass)
+    }
+
+    fun setLiquidGlassEnabled(enabled: Boolean) {
+        if (enabled) {
             background = LiquidGlassDrawable(context)
             clipToOutline = false
             elevation = 10f * resources.displayMetrics.density
             ViewCompat.setTranslationZ(this, 10f * resources.displayMetrics.density)
+        } else {
+            background = defaultBackground
+            elevation = defaultElevation
+            ViewCompat.setTranslationZ(this, defaultTranslationZ)
         }
     }
 }
