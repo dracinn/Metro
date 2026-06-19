@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="18dp"
     tools:background="@color/md_grey_800">
 
     <androidx.appcompat.widget.AppCompatImageView

@@ -209,7 +209,9 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity(),
             binding.slidingPanel.backgroundTintList = ColorStateList.valueOf(darkAccentColor())
             navigationView.backgroundTintList = ColorStateList.valueOf(darkAccentColor())
         }
-        applyLiquidGlassSurfaces()
+        if (PreferenceUtil.liquidGlass) {
+            applyLiquidGlassSurfaces()
+        }
 
         navigationBarColor = surfaceColor()
 

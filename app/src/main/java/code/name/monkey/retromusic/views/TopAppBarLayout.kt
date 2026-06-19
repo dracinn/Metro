@@ -44,6 +44,11 @@ class TopAppBarLayout @JvmOverloads constructor(
             }
             statusBarForeground = MaterialShapeDrawable.createWithElevationOverlay(context)
         }
+        if (PreferenceUtil.liquidGlass) {
+            background = LiquidGlassDrawable(context)
+            statusBarForeground = null
+            toolbar.background = null
+        }
     }
 
     fun pinWhenScrolled() {

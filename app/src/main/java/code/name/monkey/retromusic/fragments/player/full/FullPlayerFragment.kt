@@ -18,7 +18,9 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.updateLayoutParams
 import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper
 import code.name.monkey.retromusic.R
 import code.name.monkey.retromusic.databinding.FragmentFullBinding
@@ -34,8 +36,10 @@ import code.name.monkey.retromusic.glide.RetroGlideExtension
 import code.name.monkey.retromusic.glide.RetroGlideExtension.artistImageOptions
 import code.name.monkey.retromusic.helper.MusicPlayerRemote
 import code.name.monkey.retromusic.model.Song
+import code.name.monkey.retromusic.util.PreferenceUtil
 import code.name.monkey.retromusic.util.color.MediaNotificationProcessor
 import com.bumptech.glide.Glide
+import kotlin.math.roundToInt
 
 class FullPlayerFragment : AbsPlayerFragment(R.layout.fragment_full) {
     private var _binding: FragmentFullBinding? = null
@@ -65,6 +69,15 @@ class FullPlayerFragment : AbsPlayerFragment(R.layout.fragment_full) {
         setupArtist()
         binding.nextSong.isSelected = true
         binding.playbackControlsFragment.drawAboveSystemBars()
+        if (PreferenceUtil.liquidGlass) {
+            val horizontalMargin = (12f * resources.displayMetrics.density).roundToInt()
+            val glassBottomMargin = (8f * resources.displayMetrics.density).roundToInt()
+            binding.playbackControlsFragment.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                marginStart = horizontalMargin
+                marginEnd = horizontalMargin
+                bottomMargin = glassBottomMargin
+            }
+        }
     }
 
     private fun setupArtist() {

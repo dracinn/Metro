@@ -60,6 +60,7 @@ import code.name.monkey.retromusic.LAST_DIRECTORY
 import code.name.monkey.retromusic.LAST_SLEEP_TIMER_VALUE
 import code.name.monkey.retromusic.LAST_USED_TAB
 import code.name.monkey.retromusic.LIBRARY_CATEGORIES
+import code.name.monkey.retromusic.LIQUID_GLASS
 import code.name.monkey.retromusic.LOCALE_AUTO_STORE_ENABLED
 import code.name.monkey.retromusic.LOCK_SCREEN
 import code.name.monkey.retromusic.LYRICS_OPTIONS
@@ -807,6 +808,9 @@ object PreferenceUtil {
 
     val materialYou
         get() = sharedPreferences.getBoolean(MATERIAL_YOU, VersionUtils.hasS())
+
+    val liquidGlass
+        get() = sharedPreferences.getBoolean(LIQUID_GLASS, false)
 
     val isCustomFont
         get() = sharedPreferences.getBoolean(CUSTOM_FONT, false)

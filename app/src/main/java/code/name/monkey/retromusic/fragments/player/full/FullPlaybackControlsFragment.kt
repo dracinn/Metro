@@ -25,6 +25,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import code.name.monkey.appthemehelper.util.ColorUtil
@@ -50,6 +51,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import kotlin.math.roundToInt
 
 /**
  * Created by hemanths on 20/09/17.
@@ -88,6 +90,9 @@ class FullPlaybackControlsFragment :
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentFullPlayerControlsBinding.bind(view)
 
+        if (PreferenceUtil.liquidGlass) {
+            binding.root.updatePadding(top = (18f * resources.displayMetrics.density).roundToInt())
+        }
         setUpMusicControllers()
         binding.songTotalTime.setTextColor(Color.WHITE)
         binding.songCurrentProgress.setTextColor(Color.WHITE)

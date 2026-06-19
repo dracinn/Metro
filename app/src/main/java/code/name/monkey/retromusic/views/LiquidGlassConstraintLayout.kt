@@ -9,6 +9,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
+import code.name.monkey.retromusic.util.PreferenceUtil
 
 class LiquidGlassConstraintLayout @JvmOverloads constructor(
     context: Context,
@@ -17,9 +18,11 @@ class LiquidGlassConstraintLayout @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     init {
-        background = LiquidGlassDrawable(context)
-        clipToOutline = false
-        elevation = 10f * resources.displayMetrics.density
-        ViewCompat.setTranslationZ(this, 10f * resources.displayMetrics.density)
+        if (PreferenceUtil.liquidGlass) {
+            background = LiquidGlassDrawable(context)
+            clipToOutline = false
+            elevation = 10f * resources.displayMetrics.density
+            ViewCompat.setTranslationZ(this, 10f * resources.displayMetrics.density)
+        }
     }
 }

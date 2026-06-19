@@ -116,6 +116,11 @@ class ThemeSettingsFragment : AbsSettingsFragment() {
             restartActivity()
             true
         }
+        val liquidGlass: ATESwitchPreference? = findPreference(LIQUID_GLASS)
+        liquidGlass?.setOnPreferenceChangeListener { _, _ ->
+            restartActivity()
+            true
+        }
         val wallpaperAccent: ATESwitchPreference? = findPreference(WALLPAPER_ACCENT)
         wallpaperAccent?.setOnPreferenceChangeListener { _, _ ->
             restartActivity()
