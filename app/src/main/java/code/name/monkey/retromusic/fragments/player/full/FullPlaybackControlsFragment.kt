@@ -21,10 +21,12 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -46,6 +48,7 @@ import code.name.monkey.retromusic.model.Song
 import code.name.monkey.retromusic.service.MusicService
 import code.name.monkey.retromusic.util.PreferenceUtil
 import code.name.monkey.retromusic.util.color.MediaNotificationProcessor
+import code.name.monkey.retromusic.views.LiquidGlassDrawable
 import com.google.android.material.slider.Slider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -91,7 +94,7 @@ class FullPlaybackControlsFragment :
         _binding = FragmentFullPlayerControlsBinding.bind(view)
 
         if (PreferenceUtil.liquidGlass) {
-            binding.root.updatePadding(top = (18f * resources.displayMetrics.density).roundToInt())
+            applyLiquidGlassConcept()
         }
         setUpMusicControllers()
         binding.songTotalTime.setTextColor(Color.WHITE)
@@ -122,22 +125,30 @@ class FullPlaybackControlsFragment :
     }
 
     override fun setColor(color: MediaNotificationProcessor) {
-        lastPlaybackControlsColor = color.primaryTextColor
-        lastDisabledPlaybackControlsColor = ColorUtil.withAlpha(color.primaryTextColor, 0.3f)
+        val controlsColor = if (PreferenceUtil.liquidGlass) Color.WHITE else color.primaryTextColor
+        val secondaryControlsColor =
+            if (PreferenceUtil.liquidGlass) Color.WHITE.addAlpha(0.72f) else color.secondaryTextColor
+        lastPlaybackControlsColor = controlsColor
+        lastDisabledPlaybackControlsColor = ColorUtil.withAlpha(controlsColor, 0.3f)
 
-        val tintList = ColorStateList.valueOf(color.primaryTextColor)
+        val tintList = ColorStateList.valueOf(controlsColor)
         binding.playerMenu.imageTintList = tintList
         binding.songFavourite.imageTintList = tintList
-        volumeFragment?.setTintableColor(color.primaryTextColor)
-        binding.progressSlider.applyColor(color.primaryTextColor)
-        binding.title.setTextColor(color.primaryTextColor)
-        binding.text.setTextColor(color.secondaryTextColor)
-        binding.songInfo.setTextColor(color.secondaryTextColor)
-        binding.songCurrentProgress.setTextColor(color.secondaryTextColor)
-        binding.songTotalTime.setTextColor(color.secondaryTextColor)
+        volumeFragment?.setTintableColor(controlsColor)
+        binding.progressSlider.applyColor(controlsColor)
+        binding.title.setTextColor(controlsColor)
+        binding.text.setTextColor(secondaryControlsColor)
+        binding.songInfo.setTextColor(secondaryControlsColor)
+        binding.songCurrentProgress.setTextColor(secondaryControlsColor)
+        binding.songTotalTime.setTextColor(secondaryControlsColor)
 
-        binding.playPauseButton.backgroundTintList = tintList
-        binding.playPauseButton.imageTintList = ColorStateList.valueOf(color.backgroundColor)
+        if (PreferenceUtil.liquidGlass) {
+            binding.playPauseButton.backgroundTintList = ColorStateList.valueOf(Color.WHITE.addAlpha(0.18f))
+            binding.playPauseButton.imageTintList = tintList
+        } else {
+            binding.playPauseButton.backgroundTintList = tintList
+            binding.playPauseButton.imageTintList = ColorStateList.valueOf(color.backgroundColor)
+        }
 
         updateRepeatState()
         updateShuffleState()
@@ -192,6 +203,41 @@ class FullPlaybackControlsFragment :
         setUpPlayPauseFab()
         setupFavourite()
         setupMenu()
+    }
+
+    private fun applyLiquidGlassConcept() {
+        val density = resources.displayMetrics.density
+        val horizontalMargin = (18f * density).roundToInt()
+        val glassBottomMargin = (16f * density).roundToInt()
+        binding.root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            marginStart = horizontalMargin
+            marginEnd = horizontalMargin
+            bottomMargin = glassBottomMargin
+        }
+        binding.root.updatePadding(
+            left = (8f * density).roundToInt(),
+            top = (18f * density).roundToInt(),
+            right = (8f * density).roundToInt(),
+            bottom = (8f * density).roundToInt(),
+        )
+
+        listOf(
+            binding.playerMenu,
+            binding.songFavourite,
+            binding.repeatButton,
+            binding.previousButton,
+            binding.nextButton,
+            binding.shuffleButton,
+        ).forEach { button ->
+            button.background = LiquidGlassDrawable(requireContext(), 26f * density)
+            button.imageTintList = ColorStateList.valueOf(Color.WHITE)
+            button.elevation = 8f * density
+        }
+
+        binding.playPauseButton.backgroundTintList = ColorStateList.valueOf(Color.WHITE.addAlpha(0.18f))
+        binding.playPauseButton.imageTintList = ColorStateList.valueOf(Color.WHITE)
+        binding.playPauseButton.compatElevation = 10f * density
+        binding.progressSlider.applyColor(Color.WHITE)
     }
 
     private fun setupMenu() {
